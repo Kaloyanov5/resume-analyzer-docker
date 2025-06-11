@@ -1,7 +1,10 @@
 package spring.project.resume_analyzer.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GeminiResponse {
     private List<Candidate> candidates;
     private UsageMetadata usageMetadata;
