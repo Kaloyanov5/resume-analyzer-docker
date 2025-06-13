@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: resume_analyzer
+      MYSQL_USER: kaloy
+      MYSQL_PASSWORD: 0510
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  backend:
+    build:
+      context: ./backend
+    container_name: spring-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/resume_analyzer
+      SPRING_DATASOURCE_USERNAME: kaloy
+      SPRING_DATASOURCE_PASSWORD: 0510
+    depends_on:
+      - db
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: kaloy
+      PMA_PASSWORD: 0510
+    depends_on:
+      - db
+
+volumes:
+  db_data:
